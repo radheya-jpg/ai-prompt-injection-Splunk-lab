@@ -1,0 +1,3 @@
+index=* sourcetype=llm_agent_logs
+| stats count values(event_type) as event_types values(tool) as tools by session_id
+| sort session_id
