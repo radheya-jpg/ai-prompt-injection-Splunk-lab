@@ -1,0 +1,26 @@
+title: AI Agent Local File Read Followed by External Web Fetch
+id: 6d8d6c7d-5e77-4c6f-9d89-aiagent001
+status: experimental
+description: Detects an AI-agent session in which file_read and web_fetch tool calls occur in the same session. This is a behavioral indicator for possible data exfiltration and requires investigation.
+logsource:
+  product: ai_agent
+  service: llm_agent
+detection:
+  file_read:
+    event_type: tool_call_attempted
+    tool: file_read
+  web_fetch:
+    event_type: tool_call_attempted
+    tool: web_fetch
+  condition: file_read and web_fetch
+fields:
+  - session_id
+  - tool
+  - argument
+  - result
+falsepositives:
+  - Legitimate workflows that intentionally read a local file and access an external URL
+level: medium
+tags:
+  - attack.exfiltration
+  - attack.collection

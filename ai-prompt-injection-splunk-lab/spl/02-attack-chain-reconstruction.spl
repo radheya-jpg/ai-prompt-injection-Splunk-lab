@@ -1,0 +1,3 @@
+index=* sourcetype=llm_agent_logs session_id="<SESSION_ID>"
+| sort 0 _time
+| table _time event_type tool argument result prompt response session_id
