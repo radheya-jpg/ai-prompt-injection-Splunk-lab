@@ -1,0 +1,7 @@
+sourcetype=llm_agent_logs event_type=tool_call_attempted
+| stats values(tool) as tools_used dc(tool) as unique_tools by session_id
+| where unique_tools >= 2
+    AND mvfind(tools_used, "file_read") >= 0
+    AND mvfind(tools_used, "web_fetch") >= 0
+| eval alert="POSSIBLE DATA EXFIL – Agent read file and fetched external URL in same session"
+| table session_id, tools_used, alert
